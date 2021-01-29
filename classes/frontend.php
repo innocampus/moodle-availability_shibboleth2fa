@@ -32,7 +32,7 @@ class frontend extends \core_availability\frontend {
      * @return string[]
      */
     protected function get_javascript_strings() {
-        return ['title'];
+        return ['fulltitle'];
     }
 
     /**

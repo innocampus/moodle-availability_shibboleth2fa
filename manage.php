@@ -20,15 +20,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use availability_shibboleth2fa\exception_current_user_selector;
+use availability_shibboleth2fa\exception_potential_user_selector;
+
 require(__DIR__ . '/../../../config.php');
-require_once($CFG->dirroot.'/availability/condition/shibboleth2fa/locallib.php');
 global $OUTPUT, $PAGE;
 
-$cmid = required_param('id', PARAM_INT);
-/** @var cm_info $cm */
-list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+$courseid = required_param('id', PARAM_INT);
+$course = get_course($courseid);
 
-$url = new moodle_url('/availability/condition/shibboleth2fa/manage.php', array('id' => $cm->id));
+$url = new moodle_url('/availability/condition/shibboleth2fa/manage.php', array('id' => $courseid));
 $PAGE->set_url($url);
 
 require_login($course, false);
@@ -37,7 +38,7 @@ $context = context_course::instance($course->id, MUST_EXIST);
 
 require_capability('availability/shibboleth2fa:manageexceptions', $context);
 
-$PAGE->set_title($course->shortname);
+$PAGE->set_title(get_string('fulltitle', 'availability_shibboleth2fa'));
 $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 

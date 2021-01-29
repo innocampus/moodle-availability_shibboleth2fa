@@ -22,12 +22,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['title'] = 'Two-factor authentication';
+$string['title'] = '2FA';
+$string['fulltitle'] = 'Two-factor authentication';
 $string['pluginname'] = 'Restriction by two-factor authentication';
 $string['description'] = 'Require students to authenticate using a second factor.';
 $string['shibboleth2fa:addinstance'] = 'Add two-factor authentication conditions to activities';
 $string['shibboleth2fa:manageexceptions'] = 'Add and remove per-user exceptions for two-factor authentication conditions';
-$string['requires_2fa'] = 'You have authenticated using a second factor';
+$string['requires_2fa'] = 'You authenticate using a second factor';
 $string['requires_no2fa'] = 'You have not authenticated using a second factor';
 $string['login_required'] = 'You need to authenticate using a second factor to access this content. If you continue, you will be taken to the login prompt.';
 $string['login_successful'] = 'You have successfully authenticated using a second factor. You can now proceed to the requested content.';

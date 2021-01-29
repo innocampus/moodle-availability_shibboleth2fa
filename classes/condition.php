@@ -25,6 +25,7 @@ namespace availability_shibboleth2fa;
 use availability_shibboleth2fa\event\user_2fa_loggedin;
 use core_availability\info;
 use core_availability\info_module;
+use core_availability\info_section;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -97,10 +98,7 @@ class condition extends \core_availability\condition {
     public function get_description($full, $not, info $info) {
         global $USER;
 
-        if (!$info instanceof info_module) {
-            return ''; // Should only be possible against activities, not sections.
-        }
-        $cm = $info->get_course_module();
+        $course = $info->get_course();
 
         if ($not) {
             $str = get_string('requires_no2fa', 'availability_shibboleth2fa');
@@ -108,13 +106,18 @@ class condition extends \core_availability\condition {
             $str = get_string('requires_2fa', 'availability_shibboleth2fa');
 
             if (!$full || !$this->is_available($not, $info, false, $USER->id)) {
-                $url = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $cm->id));
+                $url = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $course->id));
+                if ($info instanceof info_module) {
+                    $url->param('cmid', $info->get_course_module()->id);
+                } else if ($info instanceof info_section) {
+                    $url->param('sectionid', $info->get_section()->section);
+                }
                 $str = \html_writer::link($url, $str);
             }
         }
 
         if ($full) {
-            $manageurl = new \moodle_url('/availability/condition/shibboleth2fa/manage.php', array('id' => $cm->id));
+            $manageurl = new \moodle_url('/availability/condition/shibboleth2fa/manage.php', array('id' => $course->id));
             $str .= ' (';
             $str .= \html_writer::link($manageurl, get_string('manage_exceptions', 'availability_shibboleth2fa'));
             $str .= ')';

@@ -22,12 +22,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['title'] = 'Zwei-Faktor-Authentifizierung';
+$string['title'] = '2FA';
+$string['fulltitle'] = 'Zwei-Faktor-Authentifizierung';
 $string['pluginname'] = 'Voraussetzung: Zwei-Faktor-Authentifizierung';
 $string['description'] = 'Erfordere eine Zwei-Faktor-Authentifizierung.';
 $string['shibboleth2fa:addinstance'] = 'Zwei-Faktor-Authentifizierung als Voraussetzung für Aktivitäten hinzufügen';
 $string['shibboleth2fa:manageexceptions'] = 'Nutzerspezifische Ausnahmen für die Zwei-Faktor-Authentifizierung verwalten';
-$string['requires_2fa'] = 'Sie haben sich mit einem zweiten Faktor authentifiziert';
+$string['requires_2fa'] = 'Sie authentifizieren sich mit einem zweiten Faktor';
 $string['requires_no2fa'] = 'Sie haben sich nicht mit einem zweiten Faktor authentifiziert';
 $string['login_required'] = 'Sie müssen sich mit einem zweiten Faktor authentifizieren, um auf diesen Inhalt zugreifen zu können. Wenn Sie fortfahren, werden Sie zur Anmeldeseite weitergeleitet.';
 $string['login_successful'] = 'Sie haben sich erfolgreich mit einem zweiten Faktor authentifiziert. Sie können nun auf den geschützten Inhalt zugreifen.';

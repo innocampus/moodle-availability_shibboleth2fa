@@ -23,27 +23,52 @@
 require(__DIR__ . '/../../../config.php');
 global $PAGE, $OUTPUT, $USER;
 
-$cmid = required_param('id', PARAM_INT);
-/** @var cm_info $cm */
-list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+$courseid = required_param('id', PARAM_INT);
+$cmid = optional_param('cmid', null, PARAM_INT);
+$sectionid = optional_param('sectionid', null, PARAM_INT);
 
-$url = new moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $cm->id));
+if ($cmid) {
+    list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+} else {
+    $cm = null;
+    $course = get_course($courseid);
+}
+
+$url = new moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $course->id));
+if ($cmid) $url->param('cmid', $cmid);
+if ($sectionid) $url->param('sectionid', $sectionid);
 $PAGE->set_url($url);
 
 require_login($course, false);
 
-$format = course_get_format($course);
-$courseurl = $format->get_view_url(null);
-
-$PAGE->set_title($course->shortname);
+$PAGE->set_title(get_string('fulltitle', 'availability_shibboleth2fa'));
 $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 
+$format = course_get_format($course);
+$courseurl = $format->get_view_url(null);
+
 if (\availability_shibboleth2fa\condition::is_course_available($course->id, $USER->id)) {
-    $modurl = new moodle_url("/mod/$cm->modname/view.php", array("id" => $cm->id));
-    echo $OUTPUT->confirm(get_string('login_successful', 'availability_shibboleth2fa'), $modurl, $courseurl);
+
+    // Continue to unlocked content.
+    if ($cm) {
+        $successurl = new moodle_url("/mod/$cm->modname/view.php", array("id" => $cm->id));
+    } else {
+        $successurl = $format->get_view_url($sectionid);
+    }
+
+    // Create button ourselves because we do not want to post.
+    $successbtn = new single_button($successurl, get_string('continue'), 'get', true);
+
+    echo $OUTPUT->confirm(get_string('login_successful', 'availability_shibboleth2fa'), $successbtn, $courseurl);
+
 } else {
-    $authurl = new \moodle_url('/availability/condition/shibboleth2fa/auth.php', array('id' => $cm->id));
+
+    // Continue to 2FA auth page.
+    $authurl = new \moodle_url('/availability/condition/shibboleth2fa/auth.php', array('id' => $course->id));
+    if ($cmid) $authurl->param('cmid', $cmid);
+    if ($sectionid) $authurl->param('sectionid', $sectionid);
+
     echo $OUTPUT->confirm(get_string('login_required', 'availability_shibboleth2fa'), $authurl, $courseurl);
 }
 

@@ -23,16 +23,22 @@
 require(__DIR__ . '/../../../config.php');
 global $PAGE, $OUTPUT;
 
-$cmid = required_param('id', PARAM_INT);
-/** @var cm_info $cm */
-list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+$courseid = required_param('id', PARAM_INT);
+$cmid = optional_param('cmid', null, PARAM_INT);
+$sectionid = optional_param('sectionid', null, PARAM_INT);
 
-$url = new moodle_url('/availability/condition/shibboleth2fa/auth.php', array('id' => $cm->id));
+$course = get_course($courseid);
+
+$url = new moodle_url('/availability/condition/shibboleth2fa/auth.php', array('id' => $courseid));
+if ($cmid) $url->param('cmid', $cmid);
+if ($sectionid) $url->param('sectionid', $sectionid);
 $PAGE->set_url($url);
 
 require_login($course, false);
 
 \availability_shibboleth2fa\condition::set_authenticated();
 
-$url = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $cm->id));
-redirect($url);
+$redirecturl = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $courseid));
+if ($cmid) $redirecturl->param('cmid', $cmid);
+if ($sectionid) $redirecturl->param('sectionid', $sectionid);
+redirect($redirecturl);

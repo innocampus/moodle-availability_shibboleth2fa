@@ -29,7 +29,7 @@ M.availability_shibboleth2fa.form.initInner = function() {
 
 M.availability_shibboleth2fa.form.getNode = function(json) {
     var strings = M.str.availability_shibboleth2fa;
-    var node = Y.Node.create('<span>' + strings.title + '</span>');
+    var node = Y.Node.create('<span>' + strings.fulltitle + '</span>');
 
     return node;
 };

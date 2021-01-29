@@ -2,7 +2,7 @@ YUI.add('moodle-availability_shibboleth2fa-form', function (Y, NAME) {
 
 /**
  * @package    availability_shibboleth2fa
- * @copyright  2020 Lars Bonczek, innoCampus, TU Berlin
+ * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,7 +31,7 @@ M.availability_shibboleth2fa.form.initInner = function() {
 
 M.availability_shibboleth2fa.form.getNode = function(json) {
     var strings = M.str.availability_shibboleth2fa;
-    var node = Y.Node.create('<span>' + strings.title + '</span>');
+    var node = Y.Node.create('<span>' + strings.fulltitle + '</span>');
 
     return node;
 };
