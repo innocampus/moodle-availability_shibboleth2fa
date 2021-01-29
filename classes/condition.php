@@ -106,10 +106,11 @@ class condition extends \core_availability\condition {
             $str = get_string('requires_no2fa', 'availability_shibboleth2fa');
         } else {
             $str = get_string('requires_2fa', 'availability_shibboleth2fa');
-        }
-        if (!$full || !$this->is_available($not, $info, false, $USER->id)) {
-            $url = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $cm->id));
-            $str = \html_writer::link($url, $str);
+
+            if (!$full || !$this->is_available($not, $info, false, $USER->id)) {
+                $url = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $cm->id));
+                $str = \html_writer::link($url, $str);
+            }
         }
 
         if ($full) {
