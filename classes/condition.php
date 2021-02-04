@@ -117,10 +117,13 @@ class condition extends \core_availability\condition {
         }
 
         if ($full) {
-            $manageurl = new \moodle_url('/availability/condition/shibboleth2fa/manage.php', array('id' => $course->id));
-            $str .= ' (';
-            $str .= \html_writer::link($manageurl, get_string('manage_exceptions', 'availability_shibboleth2fa'));
-            $str .= ')';
+            $context = \context_course::instance($course->id, MUST_EXIST);
+            if (has_capability('availability/shibboleth2fa:manageexceptions', $context)) {
+                $manageurl = new \moodle_url('/availability/condition/shibboleth2fa/manage.php', array('id' => $course->id));
+                $str .= ' (';
+                $str .= \html_writer::link($manageurl, get_string('manage_exceptions', 'availability_shibboleth2fa'));
+                $str .= ')';
+            }
         }
 
         return $str;
