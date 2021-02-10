@@ -39,3 +39,6 @@ $string['users_without_exception'] = 'Nutzer/innen ohne Ausnahme';
 $string['users_with_exception_matching'] = 'Passende Nutzer/innen mit Ausnahme';
 $string['users_without_exception_matching'] = 'Passende Nutzer/innen ohne Ausnahme';
 $string['eventuser2faloggedin'] = 'Nutzer/in hat sich mit einem zweiten Faktor authentifiziert';
+$string['username_description'] = 'Name der Shibboleth Webserver-Umgebungsvariable, die mit dem Moodle-Benutzername verglichen werden soll';
+$string['login_failed'] = 'Der Authentifizierungs-Vorgang ist fehlgeschlagen. Bitte kontaktieren Sie Ihren Server-Administrator oder versuchen Sie es später erneut.';
+$string['login_failed_wrong_user'] = 'Sie haben sich mit dem falschen Benutzername authentifiziert. Bitte melden Sie sich ab und versuchen Sie es erneut.';

@@ -21,7 +21,7 @@
  */
 
 require(__DIR__ . '/../../../config.php');
-global $PAGE, $OUTPUT;
+global $PAGE, $OUTPUT, $USER;
 
 $courseid = required_param('id', PARAM_INT);
 $cmid = optional_param('cmid', null, PARAM_INT);
@@ -36,9 +36,35 @@ $PAGE->set_url($url);
 
 require_login($course, false);
 
-\availability_shibboleth2fa\condition::set_authenticated();
+// Check if user is authenticated.
+$userattribute = get_config('availability_shibboleth2fa', 'user_attribute');
+$errormsg = null;
+
+if (!empty($_SERVER[$userattribute])) {
+    if (strtolower($_SERVER[$userattribute]) == strtolower($USER->username)) {
+        // User authenticated successfully.
+        \availability_shibboleth2fa\condition::set_authenticated();
+    } else {
+        // Wrong user authenticated.
+        $errormsg = get_string('login_failed_wrong_user', 'availability_shibboleth2fa');
+    }
+} else {
+    // No shibboleth login.
+    $errormsg = get_string('login_failed', 'availability_shibboleth2fa');
+}
 
 $redirecturl = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $courseid));
 if ($cmid) $redirecturl->param('cmid', $cmid);
 if ($sectionid) $redirecturl->param('sectionid', $sectionid);
-redirect($redirecturl);
+
+if ($errormsg) {
+    // Display error before redirecting.
+    $PAGE->set_title(get_string('fulltitle', 'availability_shibboleth2fa'));
+    $PAGE->set_heading($course->fullname);
+    echo $OUTPUT->header();
+    echo $OUTPUT->notification($errormsg, 'error');
+    echo $OUTPUT->continue_button($redirecturl);
+    echo $OUTPUT->footer();
+} else {
+    redirect($redirecturl);
+}

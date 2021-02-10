@@ -20,10 +20,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'availability_shibboleth2fa';
-$plugin->version = 2021021000;
-$plugin->requires = 2020061500;
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1';
+if ($ADMIN->fulltree) {
+
+    $settings->add(
+        new admin_setting_configtext('availability_shibboleth2fa/user_attribute',
+            get_string('username'),
+            get_string('username_description', 'availability_shibboleth2fa'),
+            '',
+            PARAM_RAW
+        )
+    );
+
+}
