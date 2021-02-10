@@ -23,7 +23,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'availability_shibboleth2fa';
-$plugin->version = 2021021000;
+$plugin->version = 2021021001;
 $plugin->requires = 2020061500;
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release = '0.1';

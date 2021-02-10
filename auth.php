@@ -36,12 +36,30 @@ $PAGE->set_url($url);
 
 require_login($course, false);
 
-// Check if user is authenticated.
-$userattribute = get_config('availability_shibboleth2fa', 'user_attribute');
-$errormsg = null;
+// Fetch shibboleth username.
+$userattribute = get_config('availability_shibboleth2fa', 'user_attribute_override');
+$username = null;
+if ($userattribute) {
+    // Fetch server environment variable directly.
+    if (!empty($_SERVER[$userattribute])) {
+        $username = $_SERVER[$userattribute];
+    }
+} else {
+    // Use auth_shibboleth to fetch shibboleth username.
+    $plugin = get_auth_plugin('shibboleth');
+    if ($plugin) {
+        // Do not pass a username here to prevent that value being returned (auth_shibboleth doesn't use it, anyway).
+        $userinfo = $plugin->get_userinfo(null);
+        if ($userinfo && isset($userinfo['username'])) {
+            $username = $userinfo['username'];
+        }
+    }
+}
 
-if (!empty($_SERVER[$userattribute])) {
-    if (strtolower($_SERVER[$userattribute]) == strtolower($USER->username)) {
+// Verify username.
+$errormsg = null;
+if ($username) {
+    if (strtolower($username) == strtolower($USER->username)) {
         // User authenticated successfully.
         \availability_shibboleth2fa\condition::set_authenticated();
     } else {
