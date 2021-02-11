@@ -159,6 +159,9 @@ class provider implements \core_privacy\local\metadata\provider,
         $userid = $contextlist->get_user()->id;
 
         foreach ($contextlist->get_contexts() as $context) {
+            if (!is_a($context, \context_course::class)) {
+                continue;
+            }
             $DB->delete_records('availability_shibboleth2fa_e', ['courseid' => $context->instanceid, 'userid' => $userid]);
         }
     }
