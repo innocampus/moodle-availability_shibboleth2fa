@@ -72,7 +72,7 @@ if (\availability_shibboleth2fa\condition::is_course_available($course->id, $USE
 }
 
 // Create button ourselves because we do not want to post.
-$btn = new single_button($continueurl, get_string('continue'), 'get', true);
+$btn = new single_button($continueurl, get_string('continue'), 'get', single_button::BUTTON_PRIMARY);
 echo $OUTPUT->confirm($continuetext, $btn, $courseurl);
 
 echo $OUTPUT->footer();
