@@ -4,7 +4,7 @@ Moodle availability plugin which lets users restrict activities and sections wit
 
 ## Requirements
 
-This plugin requires Moodle 3.9+
+This plugin requires Moodle 4.4+.
 
 ## Installation
 
