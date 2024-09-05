@@ -22,23 +22,23 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'availability/shibboleth2fa:addinstance' => array(
+$capabilities = [
+    'availability/shibboleth2fa:addinstance' => [
         'captype' => 'write',
         'riskbitmask' => 0,
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-    'availability/shibboleth2fa:manageexceptions' => array(
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+    'availability/shibboleth2fa:manageexceptions' => [
         'captype' => 'write',
         'riskbitmask' => 0,
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    )
-);
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];

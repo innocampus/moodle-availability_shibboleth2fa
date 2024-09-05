@@ -22,16 +22,23 @@
 
 namespace availability_shibboleth2fa;
 
+use cm_info;
+use coding_exception;
+use context_course;
+use core_availability\frontend as abstract_frontend;
+use section_info;
+use stdClass;
+
 defined('MOODLE_INTERNAL') || die();
 
-class frontend extends \core_availability\frontend {
+class frontend extends abstract_frontend {
 
     /**
      * Returns a list of language strings to pass to the javascript.
      *
      * @return string[]
      */
-    protected function get_javascript_strings() {
+    protected function get_javascript_strings(): array {
         return ['fulltitle'];
     }
 
@@ -39,18 +46,14 @@ class frontend extends \core_availability\frontend {
      * Check if the condition can be added.
      * Can only be added if the user has the appropriate capability.
      *
-     * @param \stdClass $course
-     * @param \cm_info|null $cm (optional)
-     * @param \section_info|null $section (optional)
+     * @param stdClass $course
+     * @param cm_info|null $cm (optional)
+     * @param section_info|null $section (optional)
      * @return bool
-     * @throws \coding_exception
+     * @throws coding_exception
      */
-    protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
-        if ($cm) {
-            $context = $cm->context;
-        } else {
-            $context = \context_course::instance($course->id);
-        }
+    protected function allow_add($course, cm_info $cm = null, section_info $section = null): bool {
+        $context = $cm ? $cm->context : context_course::instance($course->id);
         return has_capability('availability/shibboleth2fa:addinstance', $context);
     }
 }

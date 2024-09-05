@@ -23,14 +23,12 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-
     $settings->add(
-        new admin_setting_configtext('availability_shibboleth2fa/user_attribute_override',
-            get_string('username'),
-            get_string('username_override_description', 'availability_shibboleth2fa'),
-            '',
-            PARAM_RAW
+        new admin_setting_configtext(
+            name: 'availability_shibboleth2fa/user_attribute_override',
+            visiblename: get_string('username'),
+            description: get_string('username_override_description', 'availability_shibboleth2fa'),
+            defaultsetting: '',
         )
     );
-
 }

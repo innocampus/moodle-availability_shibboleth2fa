@@ -25,14 +25,14 @@ defined('MOODLE_INTERNAL') || die();
 $observers = [
     [
         'eventname' => '\core\event\user_enrolment_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::user_enrolment_deleted'
+        'callback' => '\availability_shibboleth2fa\condition::user_enrolment_deleted',
     ],
     [
         'eventname' => '\core\event\course_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::course_deleted'
+        'callback' => '\availability_shibboleth2fa\condition::course_deleted',
     ],
     [
         'eventname' => '\core\event\user_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::user_deleted'
-    ]
+        'callback' => '\availability_shibboleth2fa\condition::user_deleted',
+    ],
 ];

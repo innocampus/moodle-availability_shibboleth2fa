@@ -15,13 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    availability_shibboleth2fa
- * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package      availability_shibboleth2fa
+ * @copyright    2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @noinspection PhpUnhandledExceptionInspection
  */
 
+use availability_shibboleth2fa\condition;
+
 require(__DIR__ . '/../../../config.php');
-global $PAGE, $OUTPUT, $USER;
+
+/** @var core_renderer $OUTPUT because the type is not correctly annotated in Moodle */
+global $OUTPUT, $PAGE, $USER;
 
 $courseid = required_param('id', PARAM_INT);
 $cmid = optional_param('cmid', null, PARAM_INT);
@@ -29,7 +34,7 @@ $sectionid = optional_param('sectionid', null, PARAM_INT);
 
 $course = get_course($courseid);
 
-$url = new moodle_url('/availability/condition/shibboleth2fa/auth.php', array('id' => $courseid));
+$url = new moodle_url('/availability/condition/shibboleth2fa/auth.php', ['id' => $courseid]);
 if ($cmid) $url->param('cmid', $cmid);
 if ($sectionid) $url->param('sectionid', $sectionid);
 $PAGE->set_url($url);
@@ -61,7 +66,7 @@ $errormsg = null;
 if ($username) {
     if (strtolower($username) == strtolower($USER->username)) {
         // User authenticated successfully.
-        \availability_shibboleth2fa\condition::set_authenticated();
+        condition::set_authenticated();
     } else {
         // Wrong user authenticated.
         $errormsg = get_string('login_failed_wrong_user', 'availability_shibboleth2fa');
@@ -71,7 +76,7 @@ if ($username) {
     $errormsg = get_string('login_failed', 'availability_shibboleth2fa');
 }
 
-$redirecturl = new \moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $courseid));
+$redirecturl = new moodle_url('/availability/condition/shibboleth2fa/index.php', ['id' => $courseid]);
 if ($cmid) $redirecturl->param('cmid', $cmid);
 if ($sectionid) $redirecturl->param('sectionid', $sectionid);
 
