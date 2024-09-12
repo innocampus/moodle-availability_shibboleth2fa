@@ -15,17 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Calls Shibboleth authentication.
+ *
  * @package      availability_shibboleth2fa
  * @copyright    2021 Lars Bonczek, innoCampus, TU Berlin
  * @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @noinspection PhpUnhandledExceptionInspection
+ *
+ * {@noinspection PhpUnhandledExceptionInspection}
  */
 
 use availability_shibboleth2fa\condition;
 
 require(__DIR__ . '/../../../config.php');
 
-/** @var core_renderer $OUTPUT because the type is not correctly annotated in Moodle */
 global $OUTPUT, $PAGE, $USER;
 
 $courseid = required_param('id', PARAM_INT);
@@ -35,8 +37,12 @@ $sectionid = optional_param('sectionid', null, PARAM_INT);
 $course = get_course($courseid);
 
 $url = new moodle_url('/availability/condition/shibboleth2fa/auth.php', ['id' => $courseid]);
-if ($cmid) $url->param('cmid', $cmid);
-if ($sectionid) $url->param('sectionid', $sectionid);
+if ($cmid) {
+    $url->param('cmid', $cmid);
+}
+if ($sectionid) {
+    $url->param('sectionid', $sectionid);
+}
 $PAGE->set_url($url);
 
 require_login($course, false);
@@ -77,8 +83,12 @@ if ($username) {
 }
 
 $redirecturl = new moodle_url('/availability/condition/shibboleth2fa/index.php', ['id' => $courseid]);
-if ($cmid) $redirecturl->param('cmid', $cmid);
-if ($sectionid) $redirecturl->param('sectionid', $sectionid);
+if ($cmid) {
+    $redirecturl->param('cmid', $cmid);
+}
+if ($sectionid) {
+    $redirecturl->param('sectionid', $sectionid);
+}
 
 if ($errormsg) {
     // Display error before redirecting.

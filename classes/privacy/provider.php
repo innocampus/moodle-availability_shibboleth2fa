@@ -15,6 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Privacy subsystem implementation.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/subsystems/privacy
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -36,11 +40,22 @@ use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use dml_exception;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Privacy provider class.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/subsystems/privacy
+ *
+ * @package    availability_shibboleth2fa
+ * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements core_userlist_provider, metadata_provider, request_plugin_provider {
 
-    /** @inheritDoc */
+    /**
+     * {@inheritDoc}
+     *
+     * @param metadata_collection $collection The initialised collection to add items to.
+     */
     public static function get_metadata(metadata_collection $collection): metadata_collection {
         $collection->add_database_table(
             'availability_shibboleth2fa_e',
@@ -54,7 +69,11 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
         return $collection;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritDoc}
+     *
+     * @param int $userid The user to search.
+     */
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
         $sql = "SELECT ctx.id
@@ -70,7 +89,9 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param approved_contextlist $contextlist The approved contexts to export information for.
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -95,7 +116,9 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param context $context The specific context to delete data for.
      * @throws dml_exception
      */
     public static function delete_data_for_all_users_in_context(context $context): void {
@@ -106,7 +129,9 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param approved_contextlist $contextlist The approved contexts and user information to delete information for.
      * @throws dml_exception
      */
     public static function delete_data_for_user(approved_contextlist $contextlist): void {
@@ -122,7 +147,11 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
         }
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritDoc}
+     *
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+     */
     public static function get_users_in_context(userlist $userlist): void {
         $context = $userlist->get_context();
         if (!is_a($context, context_course::class)) {
@@ -140,7 +169,9 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param approved_userlist $userlist The approved context and user information to delete information for.
      * @throws coding_exception
      * @throws dml_exception
      */

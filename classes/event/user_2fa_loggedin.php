@@ -15,6 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Definition of a custom event for when a user authenticates with this plugin.
+ *
+ * @see https://docs.moodle.org/dev/Events_API
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,8 +31,16 @@ use context_system;
 use core\event\base as base_event;
 use dml_exception;
 
-defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Event class for when a user authenticates with this plugin.
+ *
+ * @see https://docs.moodle.org/dev/Events_API
+ *
+ * @package    availability_shibboleth2fa
+ * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class user_2fa_loggedin extends base_event {
 
     /**
@@ -62,6 +74,9 @@ class user_2fa_loggedin extends base_event {
         return "The user with id '$this->userid' authenticated using a second factor.";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function get_objectid_mapping(): int {
         return base_event::NOT_MAPPED;
     }
@@ -76,8 +91,11 @@ class user_2fa_loggedin extends base_event {
      */
     public static function create_and_trigger(int|null $userid = null): static {
         global $USER;
-        if (is_null($userid)) $userid = $USER->id;
-        /** @var static $event because the return type of the parent {@see create} method is not correctly annotated */
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+        // Because the return type of the parent `create` method is not correctly annotated, we do this here.
+        /** @var static $event */
         $event = static::create(['userid' => $userid, 'objectid' => $userid]);
         $event->trigger();
         return $event;

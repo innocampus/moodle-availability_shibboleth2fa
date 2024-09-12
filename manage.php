@@ -15,10 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Page for managing user exceptions from the 2FA requirement in a course.
+ *
  * @package      availability_shibboleth2fa
  * @copyright    2021 Lars Bonczek, innoCampus, TU Berlin
  * @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @noinspection PhpUnhandledExceptionInspection
+ * 4
+ * {@noinspection PhpUnhandledExceptionInspection}
  */
 
 use availability_shibboleth2fa\condition;
@@ -27,7 +30,6 @@ use availability_shibboleth2fa\exception_potential_user_selector;
 
 require(__DIR__ . '/../../../config.php');
 
-/** @var core_renderer $OUTPUT because the type is not correctly annotated in Moodle */
 global $OUTPUT, $PAGE;
 
 $courseid = required_param('id', PARAM_INT);
@@ -56,7 +58,7 @@ $currentuserselector = new exception_current_user_selector('removeselect', $opti
 if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
     if (!empty($userstoassign)) {
-        foreach($userstoassign as $adduser) {
+        foreach ($userstoassign as $adduser) {
             condition::set_exception(
                 courseid: $course->id,
                 userid: $adduser->id,
@@ -72,7 +74,7 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
 if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstounassign = $currentuserselector->get_selected_users();
     if (!empty($userstounassign)) {
-        foreach($userstounassign as $removeuser) {
+        foreach ($userstounassign as $removeuser) {
             condition::set_exception(
                 courseid: $course->id,
                 userid: $removeuser->id,

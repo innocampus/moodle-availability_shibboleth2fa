@@ -15,6 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Part of the required availability condition subsystem implementation.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesconditionphp
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -38,8 +42,15 @@ use moodle_exception;
 use moodle_url;
 use stdClass;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Availability condition class.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesconditionphp
+ *
+ * @package    availability_shibboleth2fa
+ * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class condition extends abstract_condition {
 
     /** @var int|null cached ID of user with an exception */
@@ -49,18 +60,30 @@ class condition extends abstract_condition {
     private static array $exceptioncache = [];
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param bool $not Set true if we are inverting the condition
+     * @param info $info Item we're checking
+     * @param bool $grabthelot Performance hint: if true, caches information required for all course-modules, to make the front page
+     *                         and similar pages work more quickly (works only for current user)
+     * @param int $userid User ID to check availability for
      * @throws dml_exception
      */
     public function is_available($not, info $info, $grabthelot, $userid): bool {
-        if ($grabthelot) self::preload_exceptions($userid);
+        if ($grabthelot) {
+            self::preload_exceptions($userid);
+        }
         $course = $info->get_course();
         $ret = self::is_course_available($course->id, $userid);
         return ($not xor $ret);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param bool $full Set true if this is the 'full information' view
+     * @param bool $not Set true if we are inverting the condition
+     * @param info $info Item we're checking
      * @throws moodle_exception
      */
     public function get_description($full, $not, info $info): string {
@@ -91,12 +114,16 @@ class condition extends abstract_condition {
         return $str;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritDoc}
+     */
     protected function get_debug_string(): string {
         return '';
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritDoc}
+     */
     public function save(): stdClass {
         return (object) ['type' => 'shibboleth2fa'];
     }
@@ -123,7 +150,6 @@ class condition extends abstract_condition {
     private static function preload_exceptions(int $userid): void {
         global $DB;
         self::$exceptioncacheuser = $userid;
-        // Fetch exception records.
         self::$exceptioncache = $DB->get_fieldset_select(
             table: 'availability_shibboleth2fa_e',
             return: 'courseid',
@@ -204,6 +230,9 @@ class condition extends abstract_condition {
     }
 
     /**
+     * Callback for the {@see user_enrolment_deleted} event to remove a possible exception made for the user in that course.
+     *
+     * @param user_enrolment_deleted $event The event instance in question referencing a course and a user that unenrolled from it.
      * @throws dml_exception
      */
     public static function user_enrolment_deleted(user_enrolment_deleted $event): void {
@@ -212,6 +241,9 @@ class condition extends abstract_condition {
     }
 
     /**
+     * Callback for the {@see course_deleted} event to remove all exceptions made for users in that course.
+     *
+     * @param course_deleted $event The event instance in question referencing the course that was deleted.
      * @throws dml_exception
      */
     public static function course_deleted(course_deleted $event): void {
@@ -220,6 +252,9 @@ class condition extends abstract_condition {
     }
 
     /**
+     * Callback for the {@see user_deleted} event to remove all exceptions made for that user in any course.
+     *
+     * @param user_deleted $event The event instance in question referencing the user that was deleted.
      * @throws dml_exception
      */
     public static function user_deleted(user_deleted $event): void {

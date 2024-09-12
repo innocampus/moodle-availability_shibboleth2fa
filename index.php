@@ -15,17 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Confirmation page for a user to authenticate with a second factor.
+ *
+ * If the user presses the button to continue, the `auth.php` page is requested next.
+ *
  * @package      availability_shibboleth2fa
  * @copyright    2021 Lars Bonczek, innoCampus, TU Berlin
  * @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @noinspection PhpUnhandledExceptionInspection
+ *
+ * {@noinspection PhpUnhandledExceptionInspection}
  */
 
 use availability_shibboleth2fa\condition;
 
 require(__DIR__ . '/../../../config.php');
 
-/** @var core_renderer $OUTPUT because the type is not correctly annotated in Moodle */
 global $OUTPUT, $PAGE, $USER;
 
 $courseid = required_param('id', PARAM_INT);
@@ -35,8 +39,12 @@ $sectionid = optional_param('sectionid', null, PARAM_INT);
 [$course, $cm] = $cmid ? get_course_and_cm_from_cmid($cmid) : [get_course($courseid), null];
 
 $url = new moodle_url('/availability/condition/shibboleth2fa/index.php', ['id' => $course->id]);
-if ($cmid) $url->param('cmid', $cmid);
-if ($sectionid) $url->param('sectionid', $sectionid);
+if ($cmid) {
+    $url->param('cmid', $cmid);
+}
+if ($sectionid) {
+    $url->param('sectionid', $sectionid);
+}
 $PAGE->set_url($url);
 
 require_login($course, false);
@@ -59,8 +67,12 @@ if (condition::is_course_available($course->id, $USER->id)) {
 } else {
     // Continue to 2FA auth page.
     $continueurl = new moodle_url('/availability/condition/shibboleth2fa/auth.php', ['id' => $course->id]);
-    if ($cmid) $continueurl->param('cmid', $cmid);
-    if ($sectionid) $continueurl->param('sectionid', $sectionid);
+    if ($cmid) {
+        $continueurl->param('cmid', $cmid);
+    }
+    if ($sectionid) {
+        $continueurl->param('sectionid', $sectionid);
+    }
     $continuetext = get_string('login_required', 'availability_shibboleth2fa');
 }
 

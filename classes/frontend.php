@@ -15,6 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Part of the required availability condition subsystem implementation.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesfrontendphp
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,8 +33,15 @@ use core_availability\frontend as abstract_frontend;
 use section_info;
 use stdClass;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Class for front-end (editing form) functionality.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesfrontendphp
+ *
+ * @package    availability_shibboleth2fa
+ * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class frontend extends abstract_frontend {
 
     /**
@@ -52,7 +63,7 @@ class frontend extends abstract_frontend {
      * @return bool
      * @throws coding_exception
      */
-    protected function allow_add($course, cm_info $cm = null, section_info $section = null): bool {
+    protected function allow_add($course, cm_info|null $cm = null, section_info|null $section = null): bool {
         $context = $cm ? $cm->context : context_course::instance($course->id);
         return has_capability('availability/shibboleth2fa:addinstance', $context);
     }

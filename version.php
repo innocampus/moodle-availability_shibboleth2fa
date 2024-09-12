@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Version and requirements information for the plugin.
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'availability_shibboleth2fa';
 $plugin->version = 2024090500;
-$plugin->requires = 2024042200;  // Moodle 4.4.0+
+$plugin->requires = 2024042200;  // Moodle 4.4.0+.
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release = '0.2';

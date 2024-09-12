@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Definition of the {@see exception_current_user_selector} class.
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,14 +24,12 @@
 
 namespace availability_shibboleth2fa;
 
-global $CFG;
-
 use coding_exception;
 use dml_exception;
 use user_selector_base;
 
 defined('MOODLE_INTERNAL') || die();
-
+global $CFG;
 require_once("$CFG->dirroot/user/selector/lib.php");
 
 
@@ -37,17 +37,25 @@ require_once("$CFG->dirroot/user/selector/lib.php");
  * TODO: Reduce code duplication with {@see exception_potential_user_selector}
  */
 class exception_current_user_selector extends user_selector_base {
+    /** @var int ID of the course that the exceptions apply to */
     protected int $courseid;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $name The control name/id for use in the HTML.
+     * @param array $options Other options needed to construct this selector. Must contain the `courseid`.
+     */
     public function __construct($name, $options) {
-        $this->courseid  = $options['courseid'];
+        $this->courseid = $options['courseid'];
         parent::__construct($name, $options);
     }
 
     /**
-     * Selected users
+     * Returns users for whom exceptions were defined in the associated course.
+     * {@inheritDoc}
      *
-     * @inheritDoc
+     * @param string $search the search string.
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -85,6 +93,9 @@ class exception_current_user_selector extends user_selector_base {
         return [$groupname => $availableusers];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function get_options(): array {
         $options = parent::get_options();
         $options['courseid'] = $this->courseid;
