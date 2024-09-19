@@ -87,52 +87,13 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
 }
 
 echo $OUTPUT->heading(get_string('user_exceptions', 'availability_shibboleth2fa'));
-
-?>
-<form id="assignform" method="post" action="<?php echo $PAGE->url ?>">
-    <div>
-        <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />
-        <table class="roleassigntable generaltable generalbox boxaligncenter">
-            <tr>
-                <td id="existingcell">
-                    <p>
-                        <label for="removeselect">
-                            <?php print_string('users_with_exception', 'availability_shibboleth2fa'); ?>
-                        </label>
-                    </p>
-                    <?php $currentuserselector->display() ?>
-                </td>
-                <td id="buttonscell">
-                    <div id="addcontrols">
-                        <input name="add"
-                               id="add"
-                               type="submit"
-                               value="<?php echo $OUTPUT->larrow().'&nbsp;'.get_string('add'); ?>"
-                               title="<?php print_string('add'); ?>"
-                        />
-                        <br />
-                    </div>
-                    <div id="removecontrols">
-                        <input name="remove"
-                               id="remove"
-                               type="submit"
-                               value="<?php echo get_string('remove').'&nbsp;'.$OUTPUT->rarrow(); ?>"
-                               title="<?php print_string('remove'); ?>"
-                        />
-                    </div>
-                </td>
-                <td id="potentialcell">
-                    <p>
-                        <label for="addselect">
-                            <?php print_string('users_without_exception', 'availability_shibboleth2fa'); ?>
-                        </label>
-                    </p>
-                    <?php $potentialuserselector->display() ?>
-                </td>
-            </tr>
-        </table>
-    </div>
-</form>
-<?php
-
+$templatecontext = [
+    'actionurl' => $PAGE->url->out(),
+    'sesskey' => sesskey(),
+    'currentuserselector' => $currentuserselector->display(return: true),
+    'potentialuserselector' => $potentialuserselector->display(return: true),
+    'larrow' => $OUTPUT->larrow(),
+    'rarrow' => $OUTPUT->rarrow(),
+];
+echo $OUTPUT->render_from_template('availability_shibboleth2fa/manage_form', $templatecontext);
 echo $OUTPUT->footer();
