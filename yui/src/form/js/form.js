@@ -4,7 +4,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/* global M */
+// Identifier availability_shibboleth2fa has to be used but does not follow Moodle's naming convention.
+/* eslint-disable camelcase */
+
 /**
  * JavaScript for form editing profile conditions.
  *
@@ -28,8 +30,8 @@ M.availability_shibboleth2fa.form.initInner = function() {
 };
 
 M.availability_shibboleth2fa.form.getNode = function(json) {
-    var strings = M.str.availability_shibboleth2fa;
-    var node = Y.Node.create('<span>' + strings.fulltitle + '</span>');
+    var fulltitle = M.util.get_string('fulltitle', 'availability_shibboleth2fa');
+    var node = Y.Node.create('<span>' + fulltitle + '</span>');
 
     return node;
 };
