@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Definition of plugin-specific admin settings.
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -23,14 +25,12 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-
     $settings->add(
-        new admin_setting_configtext('availability_shibboleth2fa/user_attribute_override',
-            get_string('username'),
-            get_string('username_override_description', 'availability_shibboleth2fa'),
-            '',
-            PARAM_RAW
+        new admin_setting_configtext(
+            name: 'availability_shibboleth2fa/user_attribute_override',
+            visiblename: get_string('username'),
+            description: get_string('username_override_description', 'availability_shibboleth2fa'),
+            defaultsetting: '',
         )
     );
-
 }

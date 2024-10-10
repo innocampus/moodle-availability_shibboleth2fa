@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Event observer definitions.
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,14 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 $observers = [
     [
         'eventname' => '\core\event\user_enrolment_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::user_enrolment_deleted'
+        'callback' => '\availability_shibboleth2fa\condition::user_enrolment_deleted',
     ],
     [
         'eventname' => '\core\event\course_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::course_deleted'
+        'callback' => '\availability_shibboleth2fa\condition::course_deleted',
     ],
     [
         'eventname' => '\core\event\user_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::user_deleted'
-    ]
+        'callback' => '\availability_shibboleth2fa\condition::user_deleted',
+    ],
 ];

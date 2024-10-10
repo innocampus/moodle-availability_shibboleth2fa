@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Definitions of custom capabilities associated with the plugin.
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,23 +24,23 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'availability/shibboleth2fa:addinstance' => array(
+$capabilities = [
+    'availability/shibboleth2fa:addinstance' => [
         'captype' => 'write',
         'riskbitmask' => 0,
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-    'availability/shibboleth2fa:manageexceptions' => array(
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+    'availability/shibboleth2fa:manageexceptions' => [
         'captype' => 'write',
         'riskbitmask' => 0,
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    )
-);
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];
