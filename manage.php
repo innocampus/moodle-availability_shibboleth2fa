@@ -88,7 +88,7 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
 
 echo $OUTPUT->heading(get_string('user_exceptions', 'availability_shibboleth2fa'));
 $templatecontext = [
-    'actionurl' => $PAGE->url->out(),
+    'actionurl' => $PAGE->url,
     'sesskey' => sesskey(),
     'currentuserselector' => $currentuserselector->display(return: true),
     'potentialuserselector' => $potentialuserselector->display(return: true),
