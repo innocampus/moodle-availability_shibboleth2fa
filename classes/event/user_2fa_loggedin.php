@@ -66,7 +66,7 @@ class user_2fa_loggedin extends base_event {
     }
 
     /**
-     * Returns a description of what happened.
+     * Returns non-localised event description with id's for admin use only.
      *
      * @return string
      */

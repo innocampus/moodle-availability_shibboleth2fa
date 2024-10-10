@@ -67,6 +67,7 @@ class condition extends abstract_condition {
      * @param bool $grabthelot Performance hint: if true, caches information required for all course-modules, to make the front page
      *                         and similar pages work more quickly (works only for current user)
      * @param int $userid User ID to check availability for
+     * @return bool True if available
      * @throws dml_exception
      */
     public function is_available($not, info $info, $grabthelot, $userid): bool {
@@ -84,6 +85,7 @@ class condition extends abstract_condition {
      * @param bool $full Set true if this is the 'full information' view
      * @param bool $not Set true if we are inverting the condition
      * @param info $info Item we're checking
+     * @return string Information string (for admin) about all restrictions on this item
      * @throws moodle_exception
      */
     public function get_description($full, $not, info $info): string {

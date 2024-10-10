@@ -36,7 +36,11 @@ $courseid = required_param('id', PARAM_INT);
 $cmid = optional_param('cmid', null, PARAM_INT);
 $sectionid = optional_param('sectionid', null, PARAM_INT);
 
-[$course, $cm] = $cmid ? get_course_and_cm_from_cmid($cmid) : [get_course($courseid), null];
+if ($cmid) {
+    [$course, $cm] = get_course_and_cm_from_cmid($cmid);
+} else {
+    [$course, $cm] = [get_course($courseid), null];
+}
 
 $url = new moodle_url('/availability/condition/shibboleth2fa/index.php', ['id' => $course->id]);
 if ($cmid) {

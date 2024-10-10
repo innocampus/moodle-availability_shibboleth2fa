@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['description'] = 'Erfordere eine Zwei-Faktor-Authentifizierung.';
 $string['eventuser2faloggedin'] = 'Nutzer/in hat sich mit einem zweiten Faktor authentifiziert';
 $string['fulltitle'] = 'Zwei-Faktor-Authentifizierung';
-$string['login_failed'] = 'Der Authentifizierungs-Vorgang ist fehlgeschlagen. Bitte kontaktieren Sie Ihren Server-Administrator oder versuchen Sie es später erneut.';
+$string['login_failed'] = 'Der Authentifizierungsvorgang ist fehlgeschlagen. Bitte kontaktieren Sie Ihren Administrator oder versuchen Sie es später erneut.';
 $string['login_failed_wrong_user'] = 'Sie haben sich mit dem falschen Benutzername authentifiziert. Bitte melden Sie sich ab und versuchen Sie es erneut.';
 $string['login_required'] = 'Sie müssen sich mit einem zweiten Faktor authentifizieren, um auf diesen Inhalt zugreifen zu können. Wenn Sie fortfahren, werden Sie zur Anmeldeseite weitergeleitet.';
 $string['login_successful'] = 'Sie haben sich erfolgreich mit einem zweiten Faktor authentifiziert. Sie können nun auf den geschützten Inhalt zugreifen.';

@@ -55,6 +55,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * {@inheritDoc}
      *
      * @param metadata_collection $collection The initialised collection to add items to.
+     * @return metadata_collection A listing of user data stored through this system.
      */
     public static function get_metadata(metadata_collection $collection): metadata_collection {
         $collection->add_database_table(
@@ -73,6 +74,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * {@inheritDoc}
      *
      * @param int $userid The user to search.
+     * @return contextlist The contextlist containing the list of contexts used in this plugin.
      */
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
@@ -97,20 +99,23 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      */
     public static function export_user_data(approved_contextlist $contextlist): void {
         global $DB;
-        $user = $contextlist->get_user();
-        $userid = $user->id;
-        [$insql, $params] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        $contextids = $contextlist->get_contextids();
+        if (empty($contextids)) {
+            return;
+        }
+        $pluginname = get_string('pluginname', 'availability_shibboleth2fa');
+        [$insql, $params] = $DB->get_in_or_equal($contextids, SQL_PARAMS_NAMED);
         $sql = "SELECT ctx.id AS contextid, e.courseid, e.userid, e.skipauth
                   FROM {context} ctx
                   JOIN {course} crs ON crs.id = ctx.instanceid AND ctx.contextlevel = :contextlevel
                   JOIN {availability_shibboleth2fa_e} e ON e.courseid = crs.id
                  WHERE e.userid = :userid AND ctx.id $insql";
-        $params['userid'] = $userid;
+        $params['userid'] = $contextlist->get_user()->id;
         $params['contextlevel'] = CONTEXT_COURSE;
         $records = $DB->get_recordset_sql($sql, $params);
         foreach ($records as $record) {
             $context = context::instance_by_id($record->contextid);
-            writer::with_context($context)->export_data([get_string('pluginname', 'availability_shibboleth2fa')], $record);
+            writer::with_context($context)->export_data([$pluginname], $record);
         }
         $records->close();
     }
@@ -136,9 +141,6 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      */
     public static function delete_data_for_user(approved_contextlist $contextlist): void {
         global $DB;
-        if ($contextlist->count() === 0) {
-            return;
-        }
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
             if (is_a($context, context_course::class)) {

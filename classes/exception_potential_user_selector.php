@@ -57,6 +57,10 @@ class exception_potential_user_selector extends user_selector_base {
      * {@inheritDoc}
      *
      * @param string $search the search string.
+     * @return array An array of arrays of users. The array keys of the outer array should be the string names of optgroups.
+     *               The keys of the inner arrays should be userids, and the values should be user objects containing at least
+     *               the list of fields returned by the method required_fields_sql(). If a user object has a ->disabled property
+     *               that is true, then that option will be displayed greyed out, and will not be returned by get_selected_users.
      * @throws coding_exception
      * @throws dml_exception
      */

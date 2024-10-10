@@ -47,7 +47,7 @@ class frontend extends abstract_frontend {
     /**
      * Returns a list of language strings to pass to the javascript.
      *
-     * @return string[]
+     * @return string[] Array of required string identifiers
      */
     protected function get_javascript_strings(): array {
         return ['fulltitle'];
@@ -55,11 +55,12 @@ class frontend extends abstract_frontend {
 
     /**
      * Check if the condition can be added.
+     *
      * Can only be added if the user has the appropriate capability.
      *
-     * @param stdClass $course
-     * @param cm_info|null $cm (optional)
-     * @param section_info|null $section (optional)
+     * @param stdClass $course Course object
+     * @param cm_info|null $cm Course-module currently being edited (null if none)
+     * @param section_info|null $section Section currently being edited (null if none)
      * @return bool
      * @throws coding_exception
      */
