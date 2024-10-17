@@ -15,6 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Part of the required availability condition subsystem implementation.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesfrontendphp
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,35 +26,46 @@
 
 namespace availability_shibboleth2fa;
 
-defined('MOODLE_INTERNAL') || die();
+use cm_info;
+use coding_exception;
+use context_course;
+use core_availability\frontend as abstract_frontend;
+use section_info;
+use stdClass;
 
-class frontend extends \core_availability\frontend {
+/**
+ * Class for front-end (editing form) functionality.
+ *
+ * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesfrontendphp
+ *
+ * @package    availability_shibboleth2fa
+ * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class frontend extends abstract_frontend {
 
     /**
      * Returns a list of language strings to pass to the javascript.
      *
-     * @return string[]
+     * @return string[] Array of required string identifiers
      */
-    protected function get_javascript_strings() {
+    protected function get_javascript_strings(): array {
         return ['fulltitle'];
     }
 
     /**
      * Check if the condition can be added.
+     *
      * Can only be added if the user has the appropriate capability.
      *
-     * @param \stdClass $course
-     * @param \cm_info|null $cm (optional)
-     * @param \section_info|null $section (optional)
+     * @param stdClass $course Course object
+     * @param cm_info|null $cm Course-module currently being edited (null if none)
+     * @param section_info|null $section Section currently being edited (null if none)
      * @return bool
-     * @throws \coding_exception
+     * @throws coding_exception
      */
-    protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
-        if ($cm) {
-            $context = $cm->context;
-        } else {
-            $context = \context_course::instance($course->id);
-        }
+    protected function allow_add($course, cm_info|null $cm = null, section_info|null $section = null): bool {
+        $context = $cm ? $cm->context : context_course::instance($course->id);
         return has_capability('availability/shibboleth2fa:addinstance', $context);
     }
 }

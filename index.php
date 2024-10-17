@@ -15,28 +15,40 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    availability_shibboleth2fa
- * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Confirmation page for a user to authenticate with a second factor.
+ *
+ * If the user presses the button to continue, the `auth.php` page is requested next.
+ *
+ * @package      availability_shibboleth2fa
+ * @copyright    2021 Lars Bonczek, innoCampus, TU Berlin
+ * @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * {@noinspection PhpUnhandledExceptionInspection}
  */
 
+use availability_shibboleth2fa\condition;
+
 require(__DIR__ . '/../../../config.php');
-global $PAGE, $OUTPUT, $USER;
+
+global $OUTPUT, $PAGE, $USER;
 
 $courseid = required_param('id', PARAM_INT);
 $cmid = optional_param('cmid', null, PARAM_INT);
 $sectionid = optional_param('sectionid', null, PARAM_INT);
 
 if ($cmid) {
-    list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+    [$course, $cm] = get_course_and_cm_from_cmid($cmid);
 } else {
-    $cm = null;
-    $course = get_course($courseid);
+    [$course, $cm] = [get_course($courseid), null];
 }
 
-$url = new moodle_url('/availability/condition/shibboleth2fa/index.php', array('id' => $course->id));
-if ($cmid) $url->param('cmid', $cmid);
-if ($sectionid) $url->param('sectionid', $sectionid);
+$url = new moodle_url('/availability/condition/shibboleth2fa/index.php', ['id' => $course->id]);
+if ($cmid) {
+    $url->param('cmid', $cmid);
+}
+if ($sectionid) {
+    $url->param('sectionid', $sectionid);
+}
 $PAGE->set_url($url);
 
 require_login($course, false);
@@ -48,31 +60,33 @@ echo $OUTPUT->header();
 $format = course_get_format($course);
 $courseurl = $format->get_view_url(null);
 
-$continueurl = null;
-$continuetext = null;
-if (\availability_shibboleth2fa\condition::is_course_available($course->id, $USER->id)) {
-
+if (condition::is_course_available($course->id, $USER->id)) {
     // Continue to unlocked content.
     if ($cm) {
-        $continueurl = new moodle_url("/mod/$cm->modname/view.php", array("id" => $cm->id));
+        $continueurl = new moodle_url("/mod/$cm->modname/view.php", ['id' => $cm->id]);
     } else {
         $continueurl = $format->get_view_url($sectionid);
     }
-
     $continuetext = get_string('login_successful', 'availability_shibboleth2fa');
-
 } else {
-
     // Continue to 2FA auth page.
-    $continueurl = new \moodle_url('/availability/condition/shibboleth2fa/auth.php', array('id' => $course->id));
-    if ($cmid) $continueurl->param('cmid', $cmid);
-    if ($sectionid) $continueurl->param('sectionid', $sectionid);
-
+    $continueurl = new moodle_url('/availability/condition/shibboleth2fa/auth.php', ['id' => $course->id]);
+    if ($cmid) {
+        $continueurl->param('cmid', $cmid);
+    }
+    if ($sectionid) {
+        $continueurl->param('sectionid', $sectionid);
+    }
     $continuetext = get_string('login_required', 'availability_shibboleth2fa');
 }
 
 // Create button ourselves because we do not want to post.
-$btn = new single_button($continueurl, get_string('continue'), 'get', single_button::BUTTON_PRIMARY);
+$btn = new single_button(
+    url: $continueurl,
+    label: get_string('continue'),
+    method: 'get',
+    type: single_button::BUTTON_PRIMARY,
+);
 echo $OUTPUT->confirm($continuetext, $btn, $courseurl);
 
 echo $OUTPUT->footer();
