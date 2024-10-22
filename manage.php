@@ -20,13 +20,11 @@
  * @package      availability_shibboleth2fa
  * @copyright    2021 Lars Bonczek, innoCampus, TU Berlin
  * @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * 4
+ *
  * {@noinspection PhpUnhandledExceptionInspection}
  */
 
-use availability_shibboleth2fa\condition;
-use availability_shibboleth2fa\exception_current_user_selector;
-use availability_shibboleth2fa\exception_potential_user_selector;
+use availability_shibboleth2fa\user_exception_selector;
 
 require(__DIR__ . '/../../../config.php');
 
@@ -40,60 +38,35 @@ $PAGE->set_url($url);
 
 require_login($course, false);
 
-$context = context_course::instance($course->id);
-
-require_capability('availability/shibboleth2fa:manageexceptions', $context);
+require_capability('availability/shibboleth2fa:manageexceptions', context_course::instance($courseid));
 
 $PAGE->set_title(get_string('fulltitle', 'availability_shibboleth2fa'));
 $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 
-// Create the user selector objects.
-$options = ['courseid' => $course->id, 'accesscontext' => $context];
+$potentialuserselector = user_exception_selector::instance($courseid, skipauth: false);
+$currentuserselector = user_exception_selector::instance($courseid, skipauth: true);
 
-$potentialuserselector = new exception_potential_user_selector('addselect', $options);
-$currentuserselector = new exception_current_user_selector('removeselect', $options);
-
-// Process add and removes.
+// Add/remove user exceptions.
+// Checking which of the two submit buttons was pressed (`add` or `remove`) ensures only one of the two corresponding actions will
+// be performed following the form submission. Even if users in both selectors had been selected, when the `add` button was pressed,
+// those selected in the `$currentuserselector` will not have their exceptions removed, until the `remove` button is subsequently
+// pressed as well, and vice versa.
 if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
-    $userstoassign = $potentialuserselector->get_selected_users();
-    if (!empty($userstoassign)) {
-        foreach ($userstoassign as $adduser) {
-            condition::set_exception(
-                courseid: $course->id,
-                userid: $adduser->id,
-                skipauth: true,
-            );
-        }
-        $potentialuserselector->invalidate_selected_users();
-        $currentuserselector->invalidate_selected_users();
-    }
+    $potentialuserselector->set_exceptions_for_selected_users();
 }
-
-// Process incoming role unassignments.
 if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
-    $userstounassign = $currentuserselector->get_selected_users();
-    if (!empty($userstounassign)) {
-        foreach ($userstounassign as $removeuser) {
-            condition::set_exception(
-                courseid: $course->id,
-                userid: $removeuser->id,
-                skipauth: false,
-            );
-        }
-        $potentialuserselector->invalidate_selected_users();
-        $currentuserselector->invalidate_selected_users();
-    }
+    $currentuserselector->set_exceptions_for_selected_users();
 }
 
 echo $OUTPUT->heading(get_string('user_exceptions', 'availability_shibboleth2fa'));
 $templatecontext = [
-    'actionurl' => $PAGE->url,
-    'sesskey' => sesskey(),
-    'currentuserselector' => $currentuserselector->display(return: true),
+    'actionurl'             => $PAGE->url,
+    'sesskey'               => sesskey(),
+    'currentuserselector'   => $currentuserselector->display(return: true),
     'potentialuserselector' => $potentialuserselector->display(return: true),
-    'larrow' => $OUTPUT->larrow(),
-    'rarrow' => $OUTPUT->rarrow(),
+    'larrow'                => $OUTPUT->larrow(),
+    'rarrow'                => $OUTPUT->rarrow(),
 ];
 echo $OUTPUT->render_from_template('availability_shibboleth2fa/manage_form', $templatecontext);
 echo $OUTPUT->footer();

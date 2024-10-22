@@ -193,15 +193,11 @@ class condition extends abstract_condition {
     public static function set_exception(int $courseid, int $userid, bool $skipauth): void {
         global $DB;
         // Insert or update exception record.
-        $data = new stdClass();
-        $data->courseid = $courseid;
-        $data->userid = $userid;
-        $data->skipauth = $skipauth;
-        if ($id = $DB->get_field('availability_shibboleth2fa_e', 'id', ['courseid' => $courseid, 'userid' => $userid])) {
-            $data->id = $id;
-            $DB->update_record('availability_shibboleth2fa_e', $data);
+        $data = ['courseid' => $courseid, 'userid' => $userid];
+        if ($id = $DB->get_field('availability_shibboleth2fa_e', 'id', $data)) {
+            $DB->update_record('availability_shibboleth2fa_e', $data + ['skipauth' => $skipauth, 'id' => $id]);
         } else {
-            $DB->insert_record('availability_shibboleth2fa_e', $data);
+            $DB->insert_record('availability_shibboleth2fa_e', $data + ['skipauth' => $skipauth]);
         }
         // Invalidate exception cache.
         if ($userid == self::$exceptioncacheuser) {
