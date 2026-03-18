@@ -42,7 +42,6 @@ use dml_exception;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class user_2fa_loggedin extends base_event {
-
     /**
      * Sets basic properties for the event.
      *

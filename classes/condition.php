@@ -52,7 +52,6 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class condition extends abstract_condition {
-
     /** @var int|null cached ID of user with an exception */
     private static int|null $exceptioncacheuser = null;
 

@@ -4,7 +4,20 @@ name: Moodle Plugin CI
 on:
   push:
     branches: [main]
+    paths:
+      - '**.php'
+      - '.github/workflows/*'
+      - 'db/*'
+      - 'templates/*'
   pull_request:
+    types:
+      - opened
+      - synchronize
+    paths:
+      - '**.php'
+      - '.github/workflows/*'
+      - 'db/*'
+      - 'templates/*'
 
 jobs:
   test:
@@ -12,7 +25,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:18
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -34,9 +47,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.1', '8.2', '8.3']
-        moodle-branch: ['MOODLE_404_STABLE']
+        php: ['8.1', '8.2', '8.3', '8.4']
+        moodle-branch: [MOODLE_404_STABLE, MOODLE_500_STABLE, MOODLE_501_STABLE]
         database: [pgsql, mariadb]
+        # Come Moolde/PHP combinations need to be excluded from the test matrix.
+        # See: https://moodledev.io/general/development/policies/php
+        exclude:
+          - php: '8.1'
+            moodle-branch: MOODLE_500_STABLE
+          - php: '8.1'
+            moodle-branch: MOODLE_501_STABLE
+          - php: '8.4'
+            moodle-branch: MOODLE_404_STABLE
 
     steps:
       - name: Check out repository code
@@ -50,9 +72,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ matrix.extensions }}
           ini-values: max_input_vars=5000
-          # If you are not using code coverage, keep "none". Otherwise, use "pcov" (Moodle 3.10 and up) or "xdebug".
-          # If you try to use code coverage with "none", it will fall back to phpdbg (which has known problems).
-          coverage: none
+          coverage: pcov
 
       - name: Initialise moodle-plugin-ci
         run: |
@@ -111,7 +131,7 @@ jobs:
 #      - name: Behat features
 #        id: behat
 #        if: ${{ !cancelled() }}
-#        run: moodle-plugin-ci behat --profile chrome
+#        run: moodle-plugin-ci behat --profile chrome --scss-deprecations
 #
 #      - name: Upload Behat Faildump
 #        if: ${{ failure() && steps.behat.outcome == 'failure' }}

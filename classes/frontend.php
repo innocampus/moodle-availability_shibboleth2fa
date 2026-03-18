@@ -43,7 +43,6 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class frontend extends abstract_frontend {
-
     /**
      * Returns a list of language strings to pass to the javascript.
      *
