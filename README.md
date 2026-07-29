@@ -1,24 +1,27 @@
-# moodle-availability_shibboleth2fa
+# `availability_shibboleth2fa`
 
-Moodle availability plugin which lets users restrict activities and sections with shibboleth two-factor authentication (2FA).
+Availability plugin for [Moodle][moodle home], which lets users restrict activities and sections with [Shibboleth][shibboleth home] two-factor authentication (2FA).
 
 ## Requirements
 
-This plugin requires at least Moodle `4.4`.
+The minimum supported Moodle version is [**5.2**][moodle docs release 5.2] (build 2026042000).
 
 ## Installation
 
-Install the plugin by copying the code to `availability/condition/shibboleth2fa`.
+You install `availability_shibboleth2fa` just like any other Moodle plugin.
+The code belongs in the `public/availability/condition/shibboleth2fa` directory.
 
-Example:
+For example, using `git` from the root directory of your Moodle installation:
 
 ```shell
 git clone \
     https://github.com/innocampus/moodle-availability_shibboleth2fa.git \
-    availability/condition/shibboleth2fa
+    public/availability/condition/shibboleth2fa
 ```
 
-Shibboleth needs to be configured to protect `availability/condition/shibboleth2fa/auth.php` in order for this plugin to work.
+For other options and general plugin installation instructions, see the [official Moodle documentation][moodle docs plugin install].
+
+Shibboleth needs to be configured to protect `public/availability/condition/shibboleth2fa/auth.php` in order for this plugin to work.
 
 ## Shibboleth and Apache Example Configuration
 
@@ -60,15 +63,22 @@ You need to specify the `entityID` if you want to have a Single Logout.
 </Location>
 ```
 
+(This assumes the document root points to the `public/` directory of your Moodle installation.)
+
 ## Usage
 
 #### Access restriction
 
 After installation, teachers can select "**2FA**" from the list of access restrictions when configuring an activity or section.
-Students will then be required to authenticate with shibboleth in order to access the resource.
+Students will then be required to authenticate with shibboleth to access the resource.
 After successfully authenticating once, students can access _any resource_ protected by 2FA on your Moodle site _until they log out_.
 
 #### Exceptions
 
 Teachers can add course-wide exceptions for individual users by clicking "**manage exceptions**" on a protected resource.
 Users with an exception will never be required to authenticate using 2FA for any protected resource _in that course_.
+
+[moodle docs plugin install]: https://docs.moodle.org/en/Installing_plugins#Installing_a_plugin
+[moodle docs release 5.2]: https://moodledev.io/general/releases/5.2
+[moodle home]: https://moodle.com
+[shibboleth home]: https://www.shibboleth.net
