@@ -17,19 +17,19 @@
 namespace availability_shibboleth2fa;
 
 use availability_shibboleth2fa\event\user_2fa_loggedin;
-use coding_exception;
-use context_course;
+use core\context\course as context_course;
+use core\exception\coding_exception;
+use core\exception\moodle_exception;
 use core\event\course_deleted;
 use core\event\user_deleted;
 use core\event\user_enrolment_deleted;
+use core\output\html_writer;
+use core\url as moodle_url;
 use core_availability\condition as abstract_condition;
 use core_availability\info;
 use core_availability\info_module;
 use core_availability\info_section;
 use dml_exception;
-use html_writer;
-use moodle_exception;
-use moodle_url;
 use Override;
 use stdClass;
 

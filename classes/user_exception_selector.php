@@ -16,8 +16,8 @@
 
 namespace availability_shibboleth2fa;
 
-use coding_exception;
-use context_course;
+use core\context\course as context_course;
+use core\exception\coding_exception;
 use dml_exception;
 use Override;
 use user_selector_base;

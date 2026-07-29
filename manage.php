@@ -25,6 +25,8 @@
  */
 
 use availability_shibboleth2fa\user_exception_selector;
+use core\context\course as context_course;
+use core\url as moodle_url;
 
 require(__DIR__ . '/../../../config.php');
 

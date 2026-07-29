@@ -16,12 +16,12 @@
 
 namespace availability_shibboleth2fa;
 
-use cm_info;
-use coding_exception;
-use context_course;
+use core\context\course as context_course;
+use core\exception\coding_exception;
 use core_availability\frontend as abstract_frontend;
+use core_course\cm_info;
+use core_course\section_info;
 use Override;
-use section_info;
 use stdClass;
 
 /**

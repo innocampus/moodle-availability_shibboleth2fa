@@ -16,9 +16,9 @@
 
 namespace availability_shibboleth2fa\privacy;
 
-use coding_exception;
-use context;
-use context_course;
+use core\context;
+use core\context\course as context_course;
+use core\exception\coding_exception;
 use core_privacy\local\metadata\collection as metadata_collection;
 use core_privacy\local\metadata\provider as metadata_provider;
 use core_privacy\local\request\approved_contextlist;

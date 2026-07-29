@@ -27,6 +27,8 @@
  */
 
 use availability_shibboleth2fa\condition;
+use core\output\single_button;
+use core\url as moodle_url;
 
 require(__DIR__ . '/../../../config.php');
 

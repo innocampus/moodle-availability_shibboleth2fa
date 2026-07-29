@@ -25,6 +25,7 @@
  */
 
 use availability_shibboleth2fa\condition;
+use core\url as moodle_url;
 
 require(__DIR__ . '/../../../config.php');
 
