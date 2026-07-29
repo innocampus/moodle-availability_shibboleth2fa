@@ -20,9 +20,6 @@ use availability_shibboleth2fa\event\user_2fa_loggedin;
 use core\context\course as context_course;
 use core\exception\coding_exception;
 use core\exception\moodle_exception;
-use core\event\course_deleted;
-use core\event\user_deleted;
-use core\event\user_enrolment_deleted;
 use core\output\html_writer;
 use core\url as moodle_url;
 use core_availability\condition as abstract_condition;
@@ -219,38 +216,5 @@ class condition extends abstract_condition {
         }
         // Check for per-user exceptions.
         return self::get_exception($courseid, $userid);
-    }
-
-    /**
-     * Callback for the {@see user_enrolment_deleted} event to remove a possible exception made for the user in that course.
-     *
-     * @param user_enrolment_deleted $event The event instance in question referencing a course and a user that unenrolled from it.
-     * @throws dml_exception
-     */
-    public static function user_enrolment_deleted(user_enrolment_deleted $event): void {
-        global $DB;
-        $DB->delete_records('availability_shibboleth2fa_e', ['courseid' => $event->courseid, 'userid' => $event->relateduserid]);
-    }
-
-    /**
-     * Callback for the {@see course_deleted} event to remove all exceptions made for users in that course.
-     *
-     * @param course_deleted $event The event instance in question referencing the course that was deleted.
-     * @throws dml_exception
-     */
-    public static function course_deleted(course_deleted $event): void {
-        global $DB;
-        $DB->delete_records('availability_shibboleth2fa_e', ['courseid' => $event->contextinstanceid]);
-    }
-
-    /**
-     * Callback for the {@see user_deleted} event to remove all exceptions made for that user in any course.
-     *
-     * @param user_deleted $event The event instance in question referencing the user that was deleted.
-     * @throws dml_exception
-     */
-    public static function user_deleted(user_deleted $event): void {
-        global $DB;
-        $DB->delete_records('availability_shibboleth2fa_e', ['userid' => $event->contextinstanceid]);
     }
 }

@@ -17,24 +17,31 @@
 /**
  * Event observer definitions.
  *
+ * @link https://docs.moodle.org/dev/Events_API#Event_observers Events API documentation
+ *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use availability_shibboleth2fa\event\observer;
+use core\event\course_deleted;
+use core\event\user_deleted;
+use core\event\user_enrolment_deleted;
+
 defined('MOODLE_INTERNAL') || die();
 
 $observers = [
     [
-        'eventname' => '\core\event\user_enrolment_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::user_enrolment_deleted',
+        'eventname' => course_deleted::class,
+        'callback'  => [observer::class, 'delete_associated_exceptions'],
     ],
     [
-        'eventname' => '\core\event\course_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::course_deleted',
+        'eventname' => user_deleted::class,
+        'callback'  => [observer::class, 'delete_associated_exceptions'],
     ],
     [
-        'eventname' => '\core\event\user_deleted',
-        'callback' => '\availability_shibboleth2fa\condition::user_deleted',
+        'eventname' => user_enrolment_deleted::class,
+        'callback'  => [observer::class, 'delete_associated_exceptions'],
     ],
 ];
