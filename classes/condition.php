@@ -14,16 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Part of the required availability condition subsystem implementation.
- *
- * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesconditionphp
- *
- * @package    availability_shibboleth2fa
- * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace availability_shibboleth2fa;
 
 use availability_shibboleth2fa\event\user_2fa_loggedin;
@@ -45,7 +35,7 @@ use stdClass;
 /**
  * Availability condition class.
  *
- * @see https://moodledev.io/docs/4.4/apis/plugintypes/availability#classesconditionphp
+ * @link https://moodledev.io/docs/apis/plugintypes/availability#classesconditionphp Moodle Developer Docs
  *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin

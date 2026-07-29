@@ -14,14 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Definition of the {@see user_exception_selector} class.
- *
- * @package    availability_shibboleth2fa
- * @copyright  2024 innoCampus, TU Berlin
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace availability_shibboleth2fa;
 
 use coding_exception;

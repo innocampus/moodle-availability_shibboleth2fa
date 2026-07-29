@@ -14,16 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Definition of a custom event for when a user authenticates with this plugin.
- *
- * @see https://docs.moodle.org/dev/Events_API
- *
- * @package    availability_shibboleth2fa
- * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace availability_shibboleth2fa\event;
 
 use coding_exception;
@@ -31,11 +21,10 @@ use context_system;
 use core\event\base as base_event;
 use dml_exception;
 
-
 /**
  * Event class for when a user authenticates with this plugin.
  *
- * @see https://docs.moodle.org/dev/Events_API
+ * @link https://docs.moodle.org/dev/Events_API Moodle Docs
  *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin

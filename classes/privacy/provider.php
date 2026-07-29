@@ -14,16 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Privacy subsystem implementation.
- *
- * @see https://moodledev.io/docs/4.4/apis/subsystems/privacy
- *
- * @package    availability_shibboleth2fa
- * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace availability_shibboleth2fa\privacy;
 
 use coding_exception;
@@ -43,7 +33,7 @@ use dml_exception;
 /**
  * Privacy provider class.
  *
- * @see https://moodledev.io/docs/4.4/apis/subsystems/privacy
+ * @link https://moodledev.io/docs/apis/subsystems/privacy Moodle Developer Docs
  *
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
