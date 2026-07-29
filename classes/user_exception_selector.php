@@ -19,6 +19,7 @@ namespace availability_shibboleth2fa;
 use coding_exception;
 use context_course;
 use dml_exception;
+use Override;
 use user_selector_base;
 
 defined('MOODLE_INTERNAL') || die();
@@ -93,6 +94,7 @@ class user_exception_selector extends user_selector_base {
      * @throws coding_exception
      * @throws dml_exception
      */
+    #[Override]
     public function find_users($search): array {
         global $DB;
         if (!$this->is_validating()) {
@@ -163,6 +165,7 @@ class user_exception_selector extends user_selector_base {
      *
      * @return array Options to be passed to the class' constructor.
      */
+    #[Override]
     protected function get_options(): array {
         return parent::get_options() + [
             'courseid' => $this->courseid,

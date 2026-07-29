@@ -16,10 +16,11 @@
 
 namespace availability_shibboleth2fa\event;
 
-use coding_exception;
-use context_system;
+use core\context\system as context_system;
+use core\exception\coding_exception;
 use core\event\base as base_event;
 use dml_exception;
+use Override;
 
 /**
  * Event class for when a user authenticates with this plugin.
@@ -36,6 +37,7 @@ class user_2fa_loggedin extends base_event {
      *
      * @throws dml_exception
      */
+    #[Override]
     protected function init(): void {
         $this->context = context_system::instance();
         $this->data['crud'] = 'r';
@@ -49,15 +51,15 @@ class user_2fa_loggedin extends base_event {
      * @return string
      * @throws coding_exception
      */
+    #[Override]
     public static function get_name(): string {
         return get_string('eventuser2faloggedin', 'availability_shibboleth2fa');
     }
 
     /**
-     * Returns non-localised event description with id's for admin use only.
-     *
-     * @return string
+     * {@inheritDoc}
      */
+    #[Override]
     public function get_description(): string {
         return "The user with id '$this->userid' authenticated using a second factor.";
     }
@@ -65,6 +67,7 @@ class user_2fa_loggedin extends base_event {
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public static function get_objectid_mapping(): int {
         return base_event::NOT_MAPPED;
     }

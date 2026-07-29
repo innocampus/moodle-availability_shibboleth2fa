@@ -20,6 +20,7 @@ use cm_info;
 use coding_exception;
 use context_course;
 use core_availability\frontend as abstract_frontend;
+use Override;
 use section_info;
 use stdClass;
 
@@ -38,6 +39,7 @@ class frontend extends abstract_frontend {
      *
      * @return string[] Array of required string identifiers
      */
+    #[Override]
     protected function get_javascript_strings(): array {
         return ['fulltitle'];
     }
@@ -53,6 +55,7 @@ class frontend extends abstract_frontend {
      * @return bool
      * @throws coding_exception
      */
+    #[Override]
     protected function allow_add($course, cm_info|null $cm = null, section_info|null $section = null): bool {
         $context = $cm ? $cm->context : context_course::instance($course->id);
         return has_capability('availability/shibboleth2fa:addinstance', $context);

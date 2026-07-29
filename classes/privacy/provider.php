@@ -29,6 +29,7 @@ use core_privacy\local\request\plugin\provider as request_plugin_provider;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use dml_exception;
+use Override;
 
 /**
  * Privacy provider class.
@@ -46,6 +47,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * @param metadata_collection $collection The initialised collection to add items to.
      * @return metadata_collection A listing of user data stored through this system.
      */
+    #[Override]
     public static function get_metadata(metadata_collection $collection): metadata_collection {
         $collection->add_database_table(
             'availability_shibboleth2fa_e',
@@ -65,6 +67,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * @param int $userid The user to search.
      * @return contextlist The contextlist containing the list of contexts used in this plugin.
      */
+    #[Override]
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
         $sql = "SELECT ctx.id
@@ -86,6 +89,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * @throws coding_exception
      * @throws dml_exception
      */
+    #[Override]
     public static function export_user_data(approved_contextlist $contextlist): void {
         global $DB;
         $contextids = $contextlist->get_contextids();
@@ -115,6 +119,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * @param context $context The specific context to delete data for.
      * @throws dml_exception
      */
+    #[Override]
     public static function delete_data_for_all_users_in_context(context $context): void {
         global $DB;
         if ($context->contextlevel === CONTEXT_COURSE) {
@@ -128,6 +133,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * @param approved_contextlist $contextlist The approved contexts and user information to delete information for.
      * @throws dml_exception
      */
+    #[Override]
     public static function delete_data_for_user(approved_contextlist $contextlist): void {
         global $DB;
         $userid = $contextlist->get_user()->id;
@@ -143,6 +149,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      *
      * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
      */
+    #[Override]
     public static function get_users_in_context(userlist $userlist): void {
         $context = $userlist->get_context();
         if (!is_a($context, context_course::class)) {
@@ -166,6 +173,7 @@ class provider implements core_userlist_provider, metadata_provider, request_plu
      * @throws coding_exception
      * @throws dml_exception
      */
+    #[Override]
     public static function delete_data_for_users(approved_userlist $userlist): void {
         global $DB;
         $context = $userlist->get_context();

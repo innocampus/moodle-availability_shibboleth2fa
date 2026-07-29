@@ -30,6 +30,7 @@ use dml_exception;
 use html_writer;
 use moodle_exception;
 use moodle_url;
+use Override;
 use stdClass;
 
 /**
@@ -59,6 +60,7 @@ class condition extends abstract_condition {
      * @return bool True if available
      * @throws dml_exception
      */
+    #[Override]
     public function is_available($not, info $info, $grabthelot, $userid): bool {
         if ($grabthelot) {
             self::preload_exceptions($userid);
@@ -77,6 +79,7 @@ class condition extends abstract_condition {
      * @return string Information string (for admin) about all restrictions on this item
      * @throws moodle_exception
      */
+    #[Override]
     public function get_description($full, $not, info $info): string {
         global $USER;
         $course = $info->get_course();
@@ -108,6 +111,7 @@ class condition extends abstract_condition {
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function get_debug_string(): string {
         return '';
     }
@@ -115,6 +119,7 @@ class condition extends abstract_condition {
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function save(): stdClass {
         return (object) ['type' => 'shibboleth2fa'];
     }
