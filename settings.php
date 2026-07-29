@@ -20,16 +20,22 @@
  * @package    availability_shibboleth2fa
  * @copyright  2021 Lars Bonczek, innoCampus, TU Berlin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * {@noinspection PhpUndefinedVariableInspection, PhpUnhandledExceptionInspection}
  */
 
+use core\lang_string;
+
 defined('MOODLE_INTERNAL') || die;
+
+global $ADMIN;
 
 if ($ADMIN->fulltree) {
     $settings->add(
         new admin_setting_configtext(
             name: 'availability_shibboleth2fa/user_attribute_override',
-            visiblename: get_string('username'),
-            description: get_string('username_override_description', 'availability_shibboleth2fa'),
+            visiblename: new lang_string('username'),
+            description: new lang_string('username_override_description', 'availability_shibboleth2fa'),
             defaultsetting: '',
         )
     );
