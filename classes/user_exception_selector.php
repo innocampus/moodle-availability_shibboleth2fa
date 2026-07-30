@@ -22,9 +22,11 @@ use dml_exception;
 use Override;
 use user_selector_base;
 
+// @codeCoverageIgnoreStart
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once("$CFG->dirroot/user/selector/lib.php");
+// @codeCoverageIgnoreEnd
 
 /**
  * Selector for exceptions to the 2FA requirement on a per user-and-course basis.
