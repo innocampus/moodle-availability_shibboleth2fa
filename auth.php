@@ -51,7 +51,9 @@ require_login($course, false);
 // Fetch shibboleth username.
 $userattribute = get_config('availability_shibboleth2fa', 'user_attribute_override');
 $username = null;
-if ($userattribute) {
+if (defined('BEHAT_SITE_RUNNING') && ($behatuser = get_config('availability_shibboleth2fa', 'behat_shibuser')) !== false) {
+    $username = $behatuser ?: null;
+} else if ($userattribute) {
     // Fetch server environment variable directly.
     if (!empty($_SERVER[$userattribute])) {
         $username = $_SERVER[$userattribute];
