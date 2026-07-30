@@ -29,8 +29,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'availability_shibboleth2fa';
-$plugin->version = 2024103000;
+$plugin->version = 2026073000;
 $plugin->requires = 2026042000;  // Moodle 5.2.0+.
 $plugin->supported = [502, 502];
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.0';
+$plugin->release = '2.0.0';
